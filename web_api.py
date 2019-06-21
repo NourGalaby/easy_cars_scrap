@@ -42,9 +42,9 @@ app.log_df = inititalize_log_df()
 @app.route('/')
 def home():
     if not session.get('logged_in'):
-        return render_template('login.html')
+        return render_template('./login.html')
     else:
-        return redirect(url_for("main_page") )
+        return redirect(url_for("./main_page") )
 
 @app.route('/login', methods=['POST'])
 def do_admin_login():
