@@ -1,0 +1,1 @@
+download_high_resolution_pics = True
