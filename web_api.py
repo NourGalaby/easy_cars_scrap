@@ -1,9 +1,10 @@
 from flask import Flask
 
-from flask import request, send_file, send_from_directory
+from flask import request, send_file, send_from_directory,  flash, redirect, render_template, session, abort, url_for
 import pandas as pd 
 from io import BytesIO
 import time
+import os 
 import sys
 # sys.path.insert(0,'.')
 from  scrapper  import Customer,Car
@@ -21,8 +22,8 @@ app.config["DEBUG"] = False
 # executor.submit(start_schuduler)
 
 
-@app.route('/', methods=['GET'])
-def home():
+@app.route('/main_page', methods=['GET'])
+def main_page():
     return app.send_static_file('index.html')
 
 
@@ -36,6 +37,22 @@ def inititalize_log_df():
     return log_df 
     
 app.log_df = inititalize_log_df()
+
+
+@app.route('/')
+def home():
+    if not session.get('logged_in'):
+        return render_template('login.html')
+    else:
+        return redirect(url_for("main_page") )
+
+@app.route('/login', methods=['POST'])
+def do_admin_login():
+    if request.form['password'] == 'cheesecake' and request.form['username'] == 'admin':
+      session['logged_in'] = True
+    else:
+      flash('wrong password!')
+    return home()
 
 
 
@@ -125,5 +142,5 @@ def test_input():
     return ""
     
 
-
-# app.run(debug=False)
+app.secret_key = os.urandom(12)
+# app.run(debug=True)
