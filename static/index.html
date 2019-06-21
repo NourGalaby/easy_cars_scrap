@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <title>GEt Clients Data API</title>
+ 
+ 
+   <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+ 
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+ 
+<body>
+ 
+    <div class="container">
+        <div class="header">
+
+            <h3 class="text-muted">Sitemee</h3>
+        </div>
+ 
+        <div class="jumbotron">
+            <h1>Bilbasen.dk Scrapping tool</h1>
+            <p class="lead"></p>
+            Enter links each in a new line
+          
+
+            <form id="word_form">
+                                
+                    <textarea id ='alltext' rows="10" cols="150" style="  width: 100%; box-sizing:border-box">
+
+                        </textarea>
+                <!-- Enter Word: <input type="text" required="true"  name="word_input" value=""><br> -->
+                <input type="submit" value="Download  " >  
+                <font id="not_found_text" color="red" size="2" style="margin-left:4.8em; display:none" >   Word not found</font>
+
+
+            </form>
+        </div>
+ 
+        <div class="row marketing" >
+            <div class="sm-3" id="results_div" >
+
+            </div>
+        </div>
+
+    </div>
+    <script>
+        
+
+
+
+        function downloadFile(urlToSend) {
+            console.log(urlToSend.length)
+            if (urlToSend.length < 55 ){
+                 return}
+
+     var req = new XMLHttpRequest();
+     req.open("GET", urlToSend, true);
+     req.responseType = "blob";
+     req.onload = function (event) {
+         var blob = req.response;
+         var fileName = req.getResponseHeader("x-filename") 
+         var link=document.createElement('a');
+         link.href=window.URL.createObjectURL(blob);
+         link.download=fileName;
+         link.click();
+     };
+
+     req.send();
+ }
+
+        function send_request(link){
+
+                console.log(link)
+            $.ajax({
+                url: 'requestcsv',
+                data: {'link_input' : link},
+                type: 'GET',
+                success: function(response) {
+                    $('#not_found_text').hide()
+                    console.log(response);
+                
+                }
+            });
+        }
+
+     $(function() {
+        $('#word_form').submit(function(event) {
+            event.preventDefault();
+            all_text = $('#alltext').val();
+         lines = all_text.split('\n');
+         for (line in lines){ 
+             console.log(lines[line].length)
+
+                console.log(lines[line])
+                send_request(lines[line])
+            // url = '/requestcsv_test?link_input=' + lines.pop()
+            //   downloadFile( 'requestcsv?link_input='+ lines.pop() )
+             myVar = setTimeout(function(){
+                //  downloadFile( 'requestcsv?link_input='+ lines.pop()   ) 
+                 send_request(lines[line])
+             }, line*7000);
+          
+                //   open(url)
+    
+
+          
+         }
+            // send_request($('#allte   xt').text() )
+
+        // console.log(  $('#alltext').text() )
+
+        });
+    });
+
+     </script>
+</body>
+ 
+
+
+
+</html>
