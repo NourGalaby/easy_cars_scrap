@@ -24,7 +24,10 @@ app.config["DEBUG"] = False
 
 @app.route('/main_page', methods=['GET'])
 def main_page():
-    return app.send_static_file('index.html')
+    if not session.get('logged_in'):
+        return render_template('login.html')
+    else:
+        return app.send_static_file('index.html')
 
 
 def inititalize_log_df():
@@ -42,9 +45,9 @@ app.log_df = inititalize_log_df()
 @app.route('/')
 def home():
     if not session.get('logged_in'):
-        return render_template('#login.html')
+        return render_template('login.html')
     else:
-        return redirect(url_for("#main_page") )
+        return redirect(url_for("main_page") )
 
 @app.route('/login', methods=['POST'])
 def do_admin_login():
