@@ -38,7 +38,8 @@ class Car:
     def get_page(self,url):
         car_id=str(url.split('/')[-1] ) # get car id from URL ex 3490332
         path="cars/" + car_id +".html"
-        if  os.path.exists(path):
+#        if  os.path.exists(path):
+        if False : #disabled caching 
             with open(path , 'r+' ) as f:
                 r = f.read()
 #            print "here"
@@ -169,7 +170,7 @@ class Customer:
     def __init__(self,url):
         self.url=url
         self.cars=[]    
-        self.customer_name = re.findall('handler-(.+)-as-id',url)[0]
+        self.customer_name = re.findall('handler-(.+)-id',url)[0]
         
     def get_cars_urls(self):
         print self.url
