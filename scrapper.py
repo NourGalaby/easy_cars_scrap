@@ -170,7 +170,7 @@ class Customer:
     def __init__(self,url):
         self.url=url
         self.cars=[]    
-        self.customer_name = re.findall('handler-(.+)-as-id',url)[0]
+        self.customer_name = re.findall('handler-(.+)-id',url)[0]
         
     def get_cars_urls(self):
         print self.url
