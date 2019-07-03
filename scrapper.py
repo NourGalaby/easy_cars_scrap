@@ -66,27 +66,34 @@ class Car:
 #        print ""
 #        print len(page)
         self.name= name_tag.find('span').text
+#        
+        img_s = soup.find('figure', {'id' : 'bbVipGalleryLarge' })
+        images_s = img_s.find_all('a')
         
-        imgs_s = soup.find_all('meta' , {'property' : 'og:image'})
-        for images_s in imgs_s:
-
-                image_url = images_s['content']
-                if settings.download_high_resolution_pics:
-                    image_url = image_url.split('?')[0] #get the url without cropping.. #comment for lower resolution
-                    image_filename = image_url.split('/')[-1]
-                else:
-                    #image url stays the same
-                    image_filename = image_url.split('?')[0].split('/')[-1]
-                #image_urls.append(image_url) #optional
-
-                if "bilbasen-200x200.png" in image_url: #skip logo image
-                    continue 
-                
-                self.images_urls.append( image_url)
-                #if image exists skip
-                if os.path.exists(image_filename):
-                    print("image already saved, skipping...")
-                    continue
+        for image_s in images_s:
+            self.images_urls.append(image_s['href'])
+            
+            
+#        imgs_s = soup.find_all('meta' , {'property' : 'og:image'})
+#        for images_s in imgs_s:
+#
+#                image_url = images_s['content']
+#                if settings.download_high_resolution_pics:
+#                    image_url = image_url.split('?')[0] #get the url without cropping.. #comment for lower resolution
+#                    image_filename = image_url.split('/')[-1]
+#                else:
+#                    #image url stays the same
+#                    image_filename = image_url.split('?')[0].split('/')[-1]
+#                #image_urls.append(image_url) #optional
+#
+#                if "bilbasen-200x200.png" in image_url: #skip logo image
+#                    continue 
+#                
+#                self.images_urls.append( image_url)
+#                #if image exists skip
+#                if os.path.exists(image_filename):
+#                    print("image already saved, skipping...")
+#                    continue
             
         self.images_urls = ", ".join(self.images_urls)
            
