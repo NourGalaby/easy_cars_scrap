@@ -129,8 +129,8 @@ class Car:
         mylist=x.text.strip().split(',')
         
         for s in mylist:
-            if 'Lever' in s:
-                self.Levering = float(s[  s.find('Levering') : s.find('Farve') ].split(':')[1])
+            if 'Farve' in s:
+#                self.Levering = float(s[  s.find('Levering') : s.find('Farve') ].split(':')[1])
                 self.Farve = s[  s.find('Farve') : ].split(':')[1].strip()
             else  :
                 self.description.append(s.strip()) 
